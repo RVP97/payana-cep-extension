@@ -1,0 +1,20 @@
+{
+	"name": "payana-cep",
+	"version": "1.0.0",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.0",
+		"@types/chrome": "^0.0.268",
+		"typescript": "^5.5.0"
+	},
+	"description": "Chrome extension for Payana transactions with CEP Banxico integration",
+	"scripts": {
+		"build": "bun run build:ext && bun run build:copy",
+		"build:ext": "bun build src/content.ts --outdir=dist --target=browser",
+		"build:copy": "cp manifest.json dist/ && cp -r icons dist/ 2>/dev/null || true",
+		"dev": "bun run build --watch",
+		"check": "biome check .",
+		"check:fix": "biome check --write .",
+		"format": "biome format --write ."
+	},
+	"type": "module"
+}
