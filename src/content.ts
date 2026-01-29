@@ -377,7 +377,7 @@ function formatDateForBanxico(dateStr: string): string {
 	return dateStr;
 }
 
-function openBanxicoPage(): void {
+function openCepValidator(): void {
 	const formData = getFormData();
 	const validationError = validateForm(formData);
 
@@ -390,37 +390,18 @@ function openBanxicoPage(): void {
 	state.error = null;
 	updateUI();
 
-	// Create a hidden form and submit via POST
-	const form = document.createElement("form");
-	form.method = "POST";
-	form.action = "https://www.banxico.org.mx/cep/valida.do";
-	form.target = "_blank";
-	form.style.display = "none";
-
-	const params: Record<string, string> = {
-		tipoCriterio: "T",
-		captcha: "c",
-		tipoConsulta: "1",
+	// Build URL for CEP validator
+	const params = new URLSearchParams({
 		fecha: formatDateForBanxico(formData.fecha),
-		criterio: formData.claveRastreo,
+		clave: formData.claveRastreo,
 		emisor: formData.emisor,
 		receptor: formData.receptor,
 		cuenta: formData.cuenta,
 		monto: formData.monto,
-		receptorParticipante: "0",
-	};
+	});
 
-	for (const [name, value] of Object.entries(params)) {
-		const input = document.createElement("input");
-		input.type = "hidden";
-		input.name = name;
-		input.value = value;
-		form.appendChild(input);
-	}
-
-	document.body.appendChild(form);
-	form.submit();
-	document.body.removeChild(form);
+	const validatorUrl = `https://cep-validator-two.vercel.app/?${params.toString()}`;
+	window.open(validatorUrl, "_blank");
 }
 
 function clearFormInputs(): void {
@@ -680,7 +661,7 @@ async function initExtension(): Promise<void> {
 
 	// Search button - open Banxico page
 	const searchBtn = document.getElementById("cep-search-btn");
-	searchBtn?.addEventListener("click", openBanxicoPage);
+	searchBtn?.addEventListener("click", openCepValidator);
 
 	// Set today's date as default
 	const fechaInput = document.getElementById("cep-fecha") as HTMLInputElement;

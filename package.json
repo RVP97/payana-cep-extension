@@ -6,6 +6,9 @@
 		"@types/chrome": "^0.0.268",
 		"typescript": "^5.5.0"
 	},
+	"dependencies": {
+		"cep-banxico": "^2.0.3"
+	},
 	"description": "Chrome extension for Payana transactions with CEP Banxico integration",
 	"scripts": {
 		"build": "bun run build:ext && bun run build:copy",
